@@ -3,6 +3,7 @@ import 'package:checklist_progressclub/Screens/TaskListScreen.dart';
 import 'package:checklist_progressclub/json.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
+import 'package:flutter_calendar_carousel/classes/event.dart';
 
 class TasksheetDash extends StatefulWidget {
   @override
