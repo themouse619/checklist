@@ -51,14 +51,38 @@ class Utils {
   };
   static var accountingTitles = {
     "data": [
-      {"title": "Sales"},
-      {"title": "Collection"},
-      {"title": "Expense"},
-      {"title": "Payment"},
-      {"title": "Customer Visits"},
-      {"title": "Calls"},
-      {"title": "Profit"},
-      {"title": "Others"},
+      {
+        "title": "Sales",
+        "value": "10000",
+      },
+      {
+        "title": "Collection",
+        "value": "15000",
+      },
+      {
+        "title": "Expense",
+        "value": "4000",
+      },
+      {
+        "title": "Payment",
+        "value": "10000",
+      },
+      {
+        "title": "Customer Visits",
+        "value": "6",
+      },
+      {
+        "title": "Calls",
+        "value": "12",
+      },
+      {
+        "title": "Profit",
+        "value": "1000",
+      },
+      {
+        "title": "Others",
+        "value": "",
+      },
     ]
   };
 }

@@ -12,6 +12,16 @@ class TasksheetDash extends StatefulWidget {
 
 class _TasksheetDashState extends State<TasksheetDash> {
   DateTime selectedDate = DateTime.now();
+  bool isLoading = false;
+  List eventDates = [
+    DateTime(2021, 2, 17),
+    DateTime(2021, 2, 22),
+    DateTime(2021, 2, 26)
+  ];
+  EventList<Event> _markedDateMap = new EventList<Event>(
+    events: {},
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,164 +109,328 @@ class _TasksheetDashState extends State<TasksheetDash> {
               ),
             ),
           ),
-          Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                'PROGRESS CLUB',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: Colors.black,
-                      height: 10,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    '${(Utils.data['data'].length) + (Utils.completedData['data'].length)} TASKS', // completed+remaining tasks
-                    style: TextStyle(fontWeight: FontWeight.w300),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: Colors.black,
-                      height: 10,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      title: Center(
-                        child: Text(
-                          '${Utils.completedData['data'].length}',
-                          style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.green,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      subtitle: Center(
-                        child: Text(
-                          'Completed',
-                          style: TextStyle(color: Colors.lightGreen),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    TaskListScreen(tabIndex: 1)));
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      enabled: false,
-                      title: Center(
-                        child: Text(
-                          '${Utils.data['data'].length}',
-                          style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      subtitle: Center(
-                        child: Text(
-                          'Not Completed',
-                          style: TextStyle(color: Colors.red[300]),
-                        ),
-                      ),
-                      onTap: () {},
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-              Container(
-                height: 100,
-                child: Row(
+          isLoading == false
+              ? Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      width: 10,
+                    Text(
+                      'PROGRESS CLUB',
+                      style: TextStyle(fontSize: 20),
                     ),
-                    Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height *
-                            0.09, // width: MediaQuery.of(context).size.width,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          color: Colors.deepPurple[300],
-                          elevation: 3,
-                          disabledColor: Colors.grey[300],
-                          textColor: Colors.white,
-                          child: Text('MY TASKS'),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/TaskListScreen');
-                          },
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
                         ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.black,
+                            height: 10,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          '${(Utils.data['data'].length) + (Utils.completedData['data'].length)} TASKS',
+                          // completed+remaining tasks
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.black,
+                            height: 10,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            title: Center(
+                              child: Text(
+                                '${Utils.completedData['data'].length}',
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                'Completed',
+                                style: TextStyle(color: Colors.lightGreen),
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TaskListScreen(tabIndex: 1)));
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            enabled: false,
+                            title: Center(
+                              child: Text(
+                                '${Utils.data['data'].length}',
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                'Not Completed',
+                                style: TextStyle(color: Colors.red[300]),
+                              ),
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      height: 100,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height *
+                                  0.09, // width: MediaQuery.of(context).size.width,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color: Colors.deepPurple[300],
+                                elevation: 3,
+                                disabledColor: Colors.grey[300],
+                                textColor: Colors.white,
+                                child: Text('MY TASKS'),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/TaskListScreen');
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.09,
+                              // width: MediaQuery.of(context).size.width,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color: Colors.deepPurple[300],
+                                elevation: 3,
+                                child: Text('DAILY ACCOUNTING'),
+                                disabledColor: Colors.grey[300],
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/DailyAccounting');
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
+                  ],
+                )
+              : Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'PROGRESS CLUB',
+                      style: TextStyle(fontSize: 20),
                     ),
-                    Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.09,
-                        // width: MediaQuery.of(context).size.width,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          color: Colors.deepPurple[300],
-                          elevation: 3,
-                          child: Text('DAILY ACCOUNTING'),
-                          disabledColor: Colors.grey[300],
-                          textColor: Colors.white,
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/DailyAccounting');
-                          },
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
                         ),
-                      ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.black,
+                            height: 10,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'NO TASKS ADDED', // No tasks added
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.black,
+                            height: 10,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      width: 10,
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            title: Center(
+                              child: Text(
+                                '0',
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                'Completed',
+                                style: TextStyle(color: Colors.lightGreen),
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TaskListScreen(tabIndex: 1)));
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            enabled: false,
+                            title: Center(
+                              child: Text(
+                                '0',
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                'Not Completed',
+                                style: TextStyle(color: Colors.red[300]),
+                              ),
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      height: 100,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height *
+                                  0.09, // width: MediaQuery.of(context).size.width,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color: Colors.deepPurple[300],
+                                elevation: 3,
+                                disabledColor: Colors.grey[300],
+                                textColor: Colors.white,
+                                child: Text('MY TASKS'),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/TaskListScreen');
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.09,
+                              // width: MediaQuery.of(context).size.width,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color: Colors.deepPurple[300],
+                                elevation: 3,
+                                child: Text('DAILY ACCOUNTING'),
+                                disabledColor: Colors.grey[300],
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/DailyAccounting');
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
         ],
       ),
     );
