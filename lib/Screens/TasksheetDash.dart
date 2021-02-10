@@ -14,13 +14,44 @@ class _TasksheetDashState extends State<TasksheetDash> {
   DateTime selectedDate = DateTime.now();
   bool isLoading = false;
   List eventDates = [
-    DateTime(2021, 2, 17),
-    DateTime(2021, 2, 22),
-    DateTime(2021, 2, 26)
+    // DateTime(2021, 2, 17),
+    // DateTime(2021, 2, 21),
+    // DateTime(2021, 2, 26),
+    // DateTime(2021, 2, 26),
+    // DateTime(2021, 3, 01),
   ];
   EventList<Event> _markedDateMap = new EventList<Event>(
     events: {},
   );
+
+  addEventDates() {
+    for (int i = 0; i < Utils.Reminders['data'].length; i++) {
+      eventDates.add(DateTime.parse(Utils.Reminders['data'][i]['date']));
+    }
+  }
+
+  addMarkedEvents() {
+    addEventDates();
+    for (int i = 0; i < eventDates.length; i++) {
+      _markedDateMap.add(
+        eventDates[i],
+        new Event(
+          date: eventDates[i],
+          // title: 'Reminder',
+          // icon: Icon(
+          //   Icons.circle,
+          //   size: 5,
+          //   color: Colors.blue,
+          // ),
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    addMarkedEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +59,19 @@ class _TasksheetDashState extends State<TasksheetDash> {
       appBar: AppBar(
         title: Text('Task Sheet'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Container(
+              height: 25,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/reminder.png'))),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Reminders');
+            },
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -59,7 +103,7 @@ class _TasksheetDashState extends State<TasksheetDash> {
                   todayBorderColor: Colors.transparent,
                   weekendTextStyle: TextStyle(color: Colors.red),
                   weekdayTextStyle: TextStyle(color: Colors.red),
-                  selectedDayButtonColor: Colors.deepPurple,
+                  selectedDayButtonColor: Colors.redAccent,
                   selectedDayBorderColor: Colors.transparent,
                   selectedDateTime: selectedDate,
                   onDayPressed: (date, list) {
@@ -75,36 +119,49 @@ class _TasksheetDashState extends State<TasksheetDash> {
                           return AddReminderPopUp();
                         });
                   },
-//      weekDays: null, /// for pass null when you do not want to render weekDays
-//      headerText: Container( /// Example for rendering custom header
-//        child: Text('Custom Header'),
-//      ),
-                  customDayBuilder: (
-                    /// you can provide your own build function to make custom day containers
-                    bool isSelectable,
-                    int index,
-                    bool isSelectedDay,
-                    bool isToday,
-                    bool isPrevMonthDay,
-                    TextStyle textStyle,
-                    bool isNextMonthDay,
-                    bool isThisMonthDay,
-                    DateTime day,
-                  ) {
-                    /// If you return null, [CalendarCarousel] will build container for current [day] with default function.
-                    /// This way you can build custom containers for specific days only, leaving rest as default.
-
-                    // Example: every 15th of month, we have a flight, we can place an icon in the container like that:
-                    if (day.day == 15) {
-                      return Center(
-                        child: Icon(Icons.local_airport),
-                      );
-                    } else {
-                      return null;
-                    }
-                  },
-
-                  /// null for not rendering any border, true for circular border, false for rectangular border
+                  markedDatesMap: _markedDateMap,
+                  markedDateCustomShapeBorder: CircleBorder(
+                    side: BorderSide(
+                      color: Colors.cyan,
+                      width: 2.0,
+                    ),
+                  ),
+                  markedDateWidget: Container(
+                    width: 5,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.cyan,
+                    ),
+                  ),
+                  markedDateShowIcon: false,
+                  // markedDateIconBuilder: (event) {
+                  //   return event.icon;
+                  // },
+                  // customDayBuilder: (
+                  //   /// you can provide your own build function to make custom day containers
+                  //   bool isSelectable,
+                  //   int index,
+                  //   bool isSelectedDay,
+                  //   bool isToday,
+                  //   bool isPrevMonthDay,
+                  //   TextStyle textStyle,
+                  //   bool isNextMonthDay,
+                  //   bool isThisMonthDay,
+                  //   DateTime day,
+                  // ) {
+                  //   /// If you return null, [CalendarCarousel] will build container for current [day] with default function.
+                  //   /// This way you can build custom containers for specific days only, leaving rest as default.
+                  //
+                  //   // Example: every 15th of month, we have a flight, we can place an icon in the container like that:
+                  //   if (day.day == 15) {
+                  //     return Center(
+                  //       child: Icon(Icons.local_airport),
+                  //     );
+                  //   } else {
+                  //     return null;
+                  //   }
+                  // },
                 ),
               ),
             ),

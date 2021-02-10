@@ -85,4 +85,28 @@ class Utils {
       },
     ]
   };
+  static var Reminders = {
+    "data": [
+      {
+        "date": "2021-02-17",
+        "message": "Seminar in surat for personality development",
+      },
+      {
+        "date": "2021-02-21",
+        "message": "Dogs meet at Dumas beach",
+      },
+      {
+        "date": "2021-02-26",
+        "message": "Yash's Birthday!",
+      },
+      {
+        "date": "2021-02-26",
+        "message": "Plan a party for Yash",
+      },
+      {
+        "date": "2021-03-01",
+        "message": "Curfew in the city due to COVID-19",
+      },
+    ]
+  };
 }

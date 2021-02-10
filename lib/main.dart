@@ -1,5 +1,6 @@
 import 'package:checklist_progressclub/Screens/DailyAccounting.dart';
 import 'package:checklist_progressclub/Screens/Home.dart';
+import 'package:checklist_progressclub/Screens/Reminders.dart';
 import 'package:checklist_progressclub/Screens/TaskListScreen.dart';
 import 'package:checklist_progressclub/Screens/TasksheetDash.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class _MyAppState extends State<MyApp> {
         '/TasksheetDash': (BuildContext context) => TasksheetDash(),
         '/TaskListScreen': (BuildContext context) => TaskListScreen(),
         '/DailyAccounting': (BuildContext context) => DailyAccounting(),
+        '/Reminders': (BuildContext context) => Reminders(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.deepPurple),
